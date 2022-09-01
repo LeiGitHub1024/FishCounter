@@ -2,6 +2,7 @@ async function init(){
   await new Promise(r=>{
     //拿到storage数据，展示在input里。
     chrome.storage.local.get('setting',res=>{
+      console.log('res',res)
       document.getElementById('input1').value = (res?.setting?.bans||[]).join(',')
       document.getElementById('input2').value = (res?.setting?.time||[]).join(',')
       /*

@@ -1,14 +1,26 @@
 let timeSpan = 1 //多少秒统计一次
-let reg= /bytedance|github|feishu|google|csdn|segmentfault|zhihu|volcanicengine|byted|figma|localhost|leetcode|feishu|juejin/g //屏蔽一些工作网站
-let timeArr = [[9,12],[14,19]] //什么时间算工作时间
-
+let reg=/ /i //屏蔽一些工作网站
+let timeArr=[[0,24]]//什么时间算工作时间
 async function init(){
+  await new Promise(r=>{
+    chrome.storage.local.get('setting',res=>{
+      if(!res?.setting?.bans&&!res?.setting?.time){//用户第一次使用
+        chrome.storage.local.set({'setting':{
+          bans:['feishu,juejin'],
+          time:['8-12,13-20']
+        }},res=>{
+          r()
+        })
+      }
+    })
+  })
+  
   return new Promise(r=>{
     chrome.storage.local.get('setting',res=>{
       //根据setting修改 工作时间和工作网站配置。
       let bans = res?.setting?.bans
       let time = res?.setting?.time
-      if(bans){reg = new RegExp(bans.join('|'))}
+      if(bans){reg = new RegExp(bans.join('|'),'i')}
       if(time){timeArr=time?.map(item=>item.split('-'))}
       console.log(reg,timeArr)
       r()
@@ -21,7 +33,7 @@ async function saveTime(url) {
   if (filterUrl(url)) {return;}
   let domain = extractDomain(url);
   if(isWorkRelatedWeb(domain)){return;}
-  if(!isWorkTime()){return;} //哈哈哈非工作时间不统计，非工作时间不能调试这部分功能啦。
+  if(!isWorkTime()){return;}
   let date = getDateString()
   chrome.storage.local.get(date,obj=>{
     if(!obj[date]){
