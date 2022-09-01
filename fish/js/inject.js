@@ -1,6 +1,7 @@
 //这个是注入到用户页面的
 /*
-在manifest加入以下配置
+在manifest加入以下配
+"permissions": ["scripting"],
 "content_scripts":[
   {
     "matches": ["https://wwwww.wwww.www/*"],
