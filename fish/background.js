@@ -6,8 +6,8 @@ async function init(){
     chrome.storage.local.get('setting',res=>{
       if(!res?.setting?.bans&&!res?.setting?.time){//用户第一次使用
         chrome.storage.local.set({'setting':{
-          bans:['feishu,juejin'],
-          time:['8-12,13-20']
+          bans:['balabala'],
+          time:['0-24']
         }},res=>{
           r()
         })
@@ -84,7 +84,7 @@ function isWorkTime(){
 init().then(
   // 定时循环任务, 每5秒计算一次.
   setInterval(async function () {
-    // console.log('interval')
+    console.log('interval')
     //下面这一堆就是为了获取当前聚焦的tab。
     chrome.windows.getAll(async function (windows) {
       windows.some(window=>{ //找到focus的tab
@@ -106,21 +106,23 @@ init().then(
 
 
 
-// //v3版本的extension，开启后过一会自己就死了。试试下面的代码能不能让它一直活着。试试发布了之后还用不用下面这段代码了
-// var wakeup = function(){
-//   setTimeout(function(){
-//       chrome.runtime.sendMessage('ping', function(response){
-//           console.log(response);
-//       });
-//       wakeup();
-//   }, 1000);
-// }
-// wakeup();
-// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-//   if( request == "ping" ){
-//       console.log(request);
-//       sendResponse("pong");
-//       return;
-//   }
-//   sendResponse();
-// });
+//v3版本的extension，开启后过一会自己就死了。试试下面的代码能不能让它一直活着。试试发布了之后还用不用下面这段代码了
+var wakeup = function(){
+  setTimeout(function(){
+      chrome.runtime.sendMessage('ping', function(response){
+          // console.log(response);
+          console.log('pong');
+
+      });
+      wakeup();
+  }, 1000);
+}
+wakeup();
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+  if( request == "ping" ){
+      console.log(request);
+      sendResponse("pong");
+      return;
+  }
+  sendResponse();
+});

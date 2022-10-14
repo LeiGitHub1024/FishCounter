@@ -22,7 +22,7 @@ async function drawerToday(){
   // 指定图表的配置项和数据
   var option = {
     title: {
-      text: `今日捕鱼:${total}`,
+      text: `今日:${total}`,
       left: 'center'
     },
     tooltip: {
@@ -107,8 +107,8 @@ async function drawerWeekPillar(dates,weekData){
   let myChart = echarts.init(weekDom,'macarons')
   option = {
     title: {
-      text: `本周捕鱼总量:${totalStr}`,
-      subtext: `日均捕鱼${averageStr}`,
+      text: `本周总时间:${totalStr}`,
+      subtext: `日均${averageStr}`,
       left: 'center'
     },
     xAxis: {
@@ -262,7 +262,7 @@ function secondsToTimeStr(seconds) {
 
   var timeStr = "";
   if (days != 0) {
-      return days + "天<br>" + hours + "时" + minutes + "分" + seconds + "秒";
+      return days + "天" + hours + "时" + minutes + "分" + seconds + "秒";
   } else if (hours != 0) {
       return hours + "时" + minutes + "分" + seconds + "秒";
   } else if (minutes != 0) {
